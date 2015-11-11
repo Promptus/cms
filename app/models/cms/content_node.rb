@@ -14,6 +14,8 @@ module Cms
     acts_as_tree
     acts_as_list scope: :parent_id
 
+    has_one :cache, class_name: 'Cms::ContentNodeCache'
+
     has_many :content_components, -> { order :position }, autosave: true, dependent: :destroy, as: :componentable
 
     has_and_belongs_to_many :content_nodes, join_table: "content_node_connections", foreign_key: "content_node_id_1", association_foreign_key: "content_node_id_2"
@@ -184,7 +186,11 @@ module Cms
     end
 
     def public?
-      self.access == 'public'
+      cache.present?
+    end
+
+    def access
+      public? ? 'public' : 'private'
     end
 
   end

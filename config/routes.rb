@@ -8,7 +8,7 @@ Cms::Engine.routes.draw do
     end
     member do
       post :sort
-      get :toggle_access
+      get :publish
       get :children
     end
   end

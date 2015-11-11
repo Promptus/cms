@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150826110450) do
+ActiveRecord::Schema.define(version: 20151111070312) do
 
   create_table "content_attributes", force: :cascade do |t|
     t.integer  "attributable_id",   null: false
@@ -81,6 +81,17 @@ ActiveRecord::Schema.define(version: 20150826110450) do
     t.string   "copyright"
   end
 
+  create_table "content_node_caches", force: :cascade do |t|
+    t.integer  "content_node_id"
+    t.string   "path"
+    t.text     "content"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+  end
+
+  add_index "content_node_caches", ["content_node_id"], name: "index_content_node_caches_on_content_node_id"
+  add_index "content_node_caches", ["path"], name: "index_content_node_caches_on_path"
+
   create_table "content_node_connections", id: false, force: :cascade do |t|
     t.integer "content_node_id_1", null: false
     t.integer "content_node_id_2", null: false
@@ -115,7 +126,7 @@ ActiveRecord::Schema.define(version: 20150826110450) do
 
   create_table "content_value_boolean", force: :cascade do |t|
     t.integer "content_attribute_id", null: false
-    t.integer "value",                null: false
+    t.boolean "value",                null: false
   end
 
   add_index "content_value_boolean", ["content_attribute_id"], name: "index_content_value_boolean_on_content_attribute_id"
