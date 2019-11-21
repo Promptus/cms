@@ -1,6 +1,9 @@
 # encoding: utf-8
+require 'sti_preload'
 module Cms
   class ContentNode < ActiveRecord::Base
+    include StiPreload
+
     self.table_name = :content_nodes
 
     include Cms::Concerns::ContentAttributes
@@ -33,8 +36,8 @@ module Cms
     before_validation :correct_redirect
 
     validates :title, presence: true
-    validates :url, uniqueness: true, allow_blank: true
-    validates :name, uniqueness: { scope: :parent_id }
+    validates :url, uniqueness: { case_sensitive: false }, allow_blank: true
+    validates :name, uniqueness: { scope: :parent_id, case_sensitive: false }
 
     default_scope -> { order(position: :asc).where('access = ?', 'public') }
 

@@ -1,5 +1,5 @@
 # encoding: utf-8
-require_dependency "cms/application_controller"
+# require_dependency "cms/application_controller"
 
 module Cms
   class ContentImagesController < ApplicationController

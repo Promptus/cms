@@ -1,12 +1,14 @@
 # encoding: utf-8
+require 'sti_preload'
 module Cms
   class ContentAttribute < ActiveRecord::Base
+    include StiPreload
 
     self.table_name = :content_attributes
 
     belongs_to :attributable, polymorphic: true
 
-    validates :key, uniqueness: { scope: [:attributable_id, :attributable_type] }, presence: true
+    validates :key, uniqueness: { scope: [:attributable_id, :attributable_type], case_sensitive: false }, presence: true
 
     attr_accessor :content_options
 
