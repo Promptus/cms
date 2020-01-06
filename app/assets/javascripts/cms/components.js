@@ -71,7 +71,7 @@ $(document).ready(function() {
           CmsAssets.bind_droppables(ui.draggable);
           CmsAssets.bind_single_droppables(ui.draggable);
           CmsAccordion.collapse('#components');
-          $('.select2', ui.draggable).select2();
+          $('.select2', ui.draggable).select2({ width: '100%' });
           CmsAccordion.open(ui.draggable);
         }
       }
