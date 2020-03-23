@@ -11,7 +11,7 @@ Dragonfly.app.configure do
   end
 
   processor :jpegoptim do |content|
-    content.shell_update do |old_path, new_path|
+    content.shell_update escape: false do |old_path, new_path|
       "jpegoptim --stdout #{old_path} > #{new_path}"
     end
   end
