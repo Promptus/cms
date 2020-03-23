@@ -4,6 +4,18 @@ require 'dragonfly'
 Dragonfly.app.configure do
   plugin :imagemagick
 
+  processor :pngquant do |content|
+    content.shell_update do |old_path, new_path|
+      "pngquant -f -o #{new_path} #{old_path}"
+    end
+  end
+
+  processor :jpegoptim do |content|
+    content.shell_update do |old_path, new_path|
+      "jpegoptim --stdout #{old_path} > #{new_path}"
+    end
+  end
+
   secret "def14c825e95099a3ca82e4ad99322bd0e2bd45911a6b7ae55fb91f0c6e89223"
 
   url_format "/media/:job/:name"
