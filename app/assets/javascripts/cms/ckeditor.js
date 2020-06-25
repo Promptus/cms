@@ -1,4 +1,5 @@
 $(document).ready(function() {
+  CKEDITOR.config.extraAllowedContent = 'iframe[*]';
 
   // TOOD: limit headings to h3 .... hx
   var CkEditor = {
