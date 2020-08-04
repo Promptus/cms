@@ -46,6 +46,31 @@
             <%= f.input :access do %>
               <%= f.select :access, [[t('public'), 'public'], [t('private'), 'private']] %>
             <% end %>
+            <div class="row">
+              <div class="small-2 columns">
+                <label class="right inline">Kunden-content</label>
+              </div>
+              <div class="small-10 columns">
+                <div class= "row">
+                  <% RabsyGroup.order(:name).each_slice((RabsyGroup.count.to_f / 3).ceil) do |slice| %>
+                    <div class= "small-4 columns">
+                    <% slice.each do |item| %>
+                      <span>
+                        <label for="content_node_rabsy_group_ids_<%= item.id %>">
+                          <% if @content_node.new_record? || @content_node.rabsy_groups.include?(item) %>
+                            <input type="checkbox" checked value=<%= item.id %> name="content_node[rabsy_group_ids][]" id="content_node_rabsy_group_ids_<%= item.id %>">
+                          <% else %>
+                            <input type="checkbox" value=<%= item.id %> name="content_node[rabsy_group_ids][]" id="content_node_rabsy_group_ids_<%= item.id %>">
+                          <% end %>
+                          <label class="collection_check_boxes" for="content_node_rabsy_group_ids_<%= item.id %>"><%= item.name %></label>
+                        </label>
+                      </span>
+                    <% end %>
+                    </div>
+                  <% end %>
+                </div>
+              </div>
+            </div>
             <%= f.input :meta_noindex, as: :boolean %>
           </div>
       </li>

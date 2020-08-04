@@ -122,7 +122,7 @@ module Cms
     end
 
     def base_attrs
-      [:title, :type, :parent_id, :name, :template, :meta_title, :meta_keywords, :meta_description, :meta_noindex, :meta_canonical, :url, :redirect, :access, content_category_ids: []]
+      [:title, :type, :parent_id, :name, :template, :meta_title, :meta_keywords, :meta_description, :meta_noindex, :meta_canonical, :url, :redirect, :access, content_category_ids: [], rabsy_group_ids: []]
     end
 
     def component_attrs
