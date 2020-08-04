@@ -52,7 +52,7 @@
               </div>
               <div class="small-10 columns">
                 <div class= "row">
-                  <% RabsyGroup.all.order(:name).each_slice((RabsyGroup.count.to_f / 3).ceil) do |slice| %>
+                  <% RabsyGroup.order(:name).each_slice((RabsyGroup.count.to_f / 3).ceil) do |slice| %>
                     <div class= "small-4 columns">
                     <% slice.each do |item| %>
                       <span>
