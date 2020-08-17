@@ -57,6 +57,7 @@
                     <% no_groups = @content_node.rabsy_groups.empty? %>
                     <% RabsyGroup.order(:name).each_slice((RabsyGroup.count.to_f / 3).ceil) do |slice| %>
                       <div class= "small-4 columns">
+                      <input type="hidden" name="content_node[rabsy_group_ids][]" value="">
                       <% slice.each do |item| %>
                         <span>
                           <label for="content_node_rabsy_group_ids_<%= item.id %>">
