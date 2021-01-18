@@ -1,3 +1,4 @@
+<% if asset && asset.persisted? %>
 <li data-asset-id="<%= asset.id %>" data-url="<%= asset_url(asset) %>">
   <div class="relative">
     <div class="actions">
@@ -20,3 +21,4 @@
     <% end %>
   </div>
 </li>
+<% end %>
