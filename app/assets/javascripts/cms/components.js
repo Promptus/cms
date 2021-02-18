@@ -16,8 +16,8 @@ $(document).ready(function() {
 
   Components.replace_idx = function(node, attr, idx) {
     var val = node.attr(attr);
-    if(val !== undefined) {
-      node.attr(attr, val.replace(/\d/, idx));
+    if(val !== undefined && !val.startsWith("anchor-")) {
+      node.attr(attr, val.replace(/\d+/, idx));
     }
   };
 
