@@ -9,7 +9,7 @@
     <%= simple_form_for :content_node, as: :content_node, url: add_navbar_content_nodes_url, wrapper: :horizontal_form do |f| %>
       <%= render 'cms/navbar_content_nodes/form', f: f %>
       <div class="form-buttons">
-        <%= f.submit 'Hinzufügen', class: 'button right small radius' %>
+        <%= f.submit t('save'), class: 'button right small radius' %>
       </div>
     <% end %>
   </div>

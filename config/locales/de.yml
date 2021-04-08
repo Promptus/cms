@@ -91,7 +91,7 @@ de:
   errors:
     url_attribute:
       invalid: "Format der URL ist falsch.<br/>Für externe URL's bitte http://externe_url oder https://externe_url verwenden.<br>Für URL's aus dieser Seite bitte einen slash / voranstellen. z.B. /link/zu/seite"
-  
+
   simple_form:
     labels:
       content_node:
@@ -99,4 +99,9 @@ de:
         meta_keywords: Meta-Keywords
         meta_description: Meta-Beschreibung
         meta_noindex: Noindex
-        
+
+  navbar_content_nodes:
+    position_in_navbar: Position in Navigationsleiste
+    shown_in_navbar: Wird in Navigationsleiste angezeigt
+    add_to_navbar: Zur Navigationsleiste hinzufügen
+    remove_from_navbar: Aus der Navigationsleiste entfernen

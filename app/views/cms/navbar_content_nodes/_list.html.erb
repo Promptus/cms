@@ -2,8 +2,8 @@
   <thead>
     <tr>
       <th><%= t("title") %></th>
-      <th>Position in Navigationsleiste</th>
-      <th>Wird in Navigationsleiste angezeigt</th>
+      <th><%= t('navbar_content_nodes.position_in_navbar') %></th>
+      <th><%= t('navbar_content_nodes.shown_in_navbar') %></th>
       <th><%= t("access") %></th>
       <th width="250"></th>
     </tr>
@@ -18,7 +18,7 @@
         <td class="actions">
           <ul class="button-group radius center">
             <li>
-              <%= link_to 'Aus der Navigationsleiste entfernen', remove_navbar_content_node_path(node), method: :post, class: 'button tiny alert' %>
+              <%= link_to t('navbar_content_nodes.remove_from_navbar'), remove_navbar_content_node_path(node), method: :post, class: 'button tiny alert' %>
             </li>
           </ul>
         </td>
