@@ -1,0 +1,13 @@
+<%= actions do %>
+  <div class="right">
+    <ul class="button-group right radius">
+      <li>
+        <%= link_to 'Zur Navigationsleiste hinzufügen', select_navbar_content_nodes_path, class: 'button right radius small' %>
+      </li>
+    </ul>
+  </div>
+<% end %>
+
+<div id="content-nodes-table" class="columns small-12 navbar-table">
+  <%= render 'cms/navbar_content_nodes/list', content_nodes: @content_nodes %>
+</div>

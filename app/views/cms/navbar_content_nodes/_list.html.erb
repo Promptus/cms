@@ -1,0 +1,28 @@
+<table width="100%" class="content-nodes index">
+  <thead>
+    <tr>
+      <th><%= t("title") %></th>
+      <th>Position in Navigationsleiste</th>
+      <th>Wird in Navigationsleiste angezeigt</th>
+      <th><%= t("access") %></th>
+      <th width="250"></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% content_nodes.each do |node| %>
+      <tr id="<%= dom_id node %>" data-node-id="<%= node.id %>" data-sort-url="<%= sort_content_node_path(node) %>">
+        <td><%= link_to node.title, edit_content_node_path(node) %></td>
+        <td data-content='position'></td>
+        <td data-content='shown'></td>
+        <td><%= link_to t(node.access), toggle_access_navbar_content_node_path(node), method: :post, 'data-confirm': t(:toggle_node_access_prompt, name: node.title, access: t(node.public? ? 'private' : 'public')), class: "button toggle-access tiny radius #{node.public? ? 'success' : 'alert' }" %></td>
+        <td class="actions">
+          <ul class="button-group radius center">
+            <li>
+              <%= link_to 'Aus der Navigationsleiste entfernen', remove_navbar_content_node_path(node), method: :post, class: 'button tiny alert' %>
+            </li>
+          </ul>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

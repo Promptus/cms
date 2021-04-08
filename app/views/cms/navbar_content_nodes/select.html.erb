@@ -1,0 +1,16 @@
+<%= actions do %>
+  <div class="right">
+    <%= link_to t(:back_to_index), navbar_content_nodes_path, class: 'button radius small secondary' %>
+  </div>
+<% end %>
+
+<div class="columns small-12 form-left form-right">
+  <div class="columns small-12 form-left form-right">
+    <%= simple_form_for :content_node, as: :content_node, url: add_navbar_content_nodes_url, wrapper: :horizontal_form do |f| %>
+      <%= render 'cms/navbar_content_nodes/form', f: f %>
+      <div class="form-buttons">
+        <%= f.submit 'Hinzufügen', class: 'button right small radius' %>
+      </div>
+    <% end %>
+  </div>
+</div>
