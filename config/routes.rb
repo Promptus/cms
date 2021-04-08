@@ -14,6 +14,19 @@ Cms::Engine.routes.draw do
     end
   end
 
+  resources :navbar_content_nodes, only: [:index] do
+    collection do
+      get 'select'
+      get 'positions'
+      post 'add'
+    end
+
+    member do
+      post 'remove'
+      post 'toggle_access'
+    end
+  end
+
   resources :content_categories
 
   resources :content_images do

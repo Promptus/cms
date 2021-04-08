@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_07_165650) do
+ActiveRecord::Schema.define(version: 2021_04_06_092040) do
 
   create_table "content_attributes", force: :cascade do |t|
     t.integer "attributable_id", null: false
@@ -100,6 +100,7 @@ ActiveRecord::Schema.define(version: 2019_01_07_165650) do
     t.datetime "updated_at", null: false
     t.boolean "meta_noindex"
     t.string "meta_canonical", limit: 1024
+    t.boolean "used_in_navbar", default: false
     t.index ["access"], name: "index_content_nodes_on_access"
     t.index ["name"], name: "index_content_nodes_on_name"
     t.index ["parent_id"], name: "index_content_nodes_on_parent_id"

@@ -10,6 +10,8 @@ module Cms
     include Cms::Concerns::List
     include Cms::Concerns::Tree
 
+    ITEMS_IN_NAVBAR_MAX = 4
+
     acts_as_tree
     # 'touch_on_update: false' here somehow works only for the content_nodes
     # which had higher position comparing to the node you're moving
@@ -51,11 +53,22 @@ module Cms
     scope :without_node, -> (node_id) { where('content_nodes.id != ?', node_id) }
     scope :root_nodes, -> { where(parent_id: nil) }
     scope :unscoped_root_nodes, -> { unscoped.where(parent_id: nil) }
+    scope :used_in_navbar, -> { where(used_in_navbar: true) }
+    scope :currently_in_navbar, -> { where(used_in_navbar: true).limit(ITEMS_IN_NAVBAR_MAX) }
+    scope :not_used_in_navbar, -> { where(used_in_navbar: false) }
 
     scope :with_relations, -> { includes(:content_components, content_attributes: [:content_value]).merge(Cms::ContentComponent.with_relations) }
 
     content_property :child_nodes
     content_property :use_components
+
+    def add_to_navbar!
+      update!(used_in_navbar: true)
+    end
+
+    def remove_from_navbar!
+      update!(used_in_navbar: false)
+    end
 
     # most of the code is taken from active_record/nested_attributes.rb
     # see https://github.com/rails/rails/blob/4-2-stable/activerecord/lib/active_record/nested_attributes.rb#L433
