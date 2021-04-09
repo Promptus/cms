@@ -62,6 +62,7 @@ module Cms
     def toggle_access
       touch_parent_node
       @content_node.update_attribute(:access, @content_node.public? ? 'private' : 'public')
+      redirect_to content_nodes_path
     end
 
     def sort
