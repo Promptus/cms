@@ -1,6 +1,9 @@
 # encoding: utf-8
+require 'sti_preload'
 module Cms
   class ContentComponent < ActiveRecord::Base
+    include StiPreload
+
     self.table_name = :content_components
 
     include Cms::Concerns::ContentAttributes
