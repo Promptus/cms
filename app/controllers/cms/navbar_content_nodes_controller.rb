@@ -8,7 +8,7 @@ module Cms
     end
 
     def select
-      @content_nodes_for_selection = ContentNode.not_used_in_navbar.where(parent_id: nil).order(:title).pluck(:title, :id)
+      @content_nodes_for_selection = ContentNode.unscoped.not_used_in_navbar.order(:title).pluck(:title, :id)
     end
 
     def add
