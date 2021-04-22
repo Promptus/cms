@@ -4,11 +4,11 @@ module Cms
     helper_method :content_node_options
 
     def index
-      @content_nodes = ContentNode.unscoped.order(position: :asc).used_in_navbar
+      @content_nodes = ContentNode.asc_by_position.used_in_navbar
     end
 
     def select
-      @content_nodes_for_selection = ContentNode.unscoped.not_used_in_navbar.order(:title).pluck(:title, :id)
+      @content_nodes_for_selection = ContentNode.not_used_in_navbar.order(:title).pluck(:title, :id)
     end
 
     def add
@@ -38,12 +38,11 @@ module Cms
     private
 
     def touch_parent_node
-      parent = ContentNode.unscoped.find_by(id: @content_node.parent_id)
-      parent.touch if parent.present?
+      ContentNode.find_by(id: @content_node.parent_id)&.touch
     end
 
     def load_object
-      ContentNode.unscoped.find(params[:id])
+      ContentNode.find(params[:id])
     end
   end
 end

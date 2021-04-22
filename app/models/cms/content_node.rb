@@ -38,16 +38,6 @@ module Cms
     validates :url, uniqueness: true, allow_blank: true
     validates :name, uniqueness: { scope: :parent_id }
 
-    # default_scope -> { order(position: :asc).where('access = ?', 'public') }
-
-    def unscoped_children
-      Cms::ContentNode.unscoped.where(parent_id: id)
-    end
-
-    def unscoped_parent
-      Cms::ContentNode.unscoped.find_by(id: parent_id)
-    end
-
     # active record already defines a public method
     scope :public_nodes, -> { where('access = ?', 'public') }
     scope :asc_by_position, -> { order(position: :asc) }
@@ -170,23 +160,8 @@ module Cms
       end
     end
 
-    def redirect_path
-      case redirect
-      when /\.\.\/(.*)/
-        parent.path + '/' + $1
-      when /\.\/(.*)/
-        path + '/' + $1
-      else
-        '/' + redirect
-      end
-    end
-
     def path_elements
-      if unscoped_parent
-        unscoped_parent.path_elements + [name]
-      else
-        [name]
-      end
+      parent ? (parent.path_elements + [name]) : [name]
     end
 
     def path
@@ -215,7 +190,7 @@ module Cms
     end
 
     def copyable?
-      unscoped_children.count == 0
+      children.count == 0
     end
   end
 end

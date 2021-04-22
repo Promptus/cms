@@ -13,7 +13,7 @@ module Cms
     before_action :load_assets, only: [:new, :edit, :create, :update, :copy]
 
     def index
-      @content_nodes = unscoped.where(parent_id: nil)
+      @content_nodes = root_nodes
     end
 
     def new
@@ -108,10 +108,7 @@ module Cms
     protected
 
     def touch_parent_node
-      parent = Cms::ContentNode.unscoped.find_by(id: @content_node.parent_id)
-      if parent.present?
-        parent.touch
-      end
+      Cms::ContentNode.find_by(id: @content_node.parent_id)&.touch
     end
 
     def redirect_to_parent_or_index
@@ -152,10 +149,6 @@ module Cms
       @documents = ContentDocument.page(params[:page]).per(assets_per_page)
     end
 
-    def unscoped
-      ContentNode.unscoped.order(position: :asc)
-    end
-
     def load_components
       @components = content_components(@content_node)
       @components.map(&:load_attributes)
@@ -164,7 +157,7 @@ module Cms
     def load_parent
       parent_id = params[:parent_id] || (params[:content_node] || {})[:parent_id]
       if parent_id.present?
-        @parent = unscoped.find(parent_id)
+        @parent = ContentNode.asc_by_position.find(parent_id)
       end
     end
 
@@ -173,11 +166,11 @@ module Cms
     end
 
     def load_children
-      @children ||= unscoped.where(parent_id: load_object.id)
+      @children ||= ContentNode.asc_by_position.where(parent_id: load_object.id)
     end
 
     def find_objects
-      query = unscoped.where(parent_id: params[:parent_id])
+      query = ContentNode.asc_by_position.where(parent_id: params[:parent_id])
       if params[:q]
         queries = params[:q].gsub(' ', ',').split(',').map(&:strip).reject(&:blank?).map{|p| "%#{p}%" }
         queries.each do |q|
