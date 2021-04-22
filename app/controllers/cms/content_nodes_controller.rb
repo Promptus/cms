@@ -162,7 +162,7 @@ module Cms
     end
 
     def load_object
-      @content_node = with_relations.find(params[:id])
+      @content_node = ContentNode.with_relations.find(params[:id])
     end
 
     def load_children

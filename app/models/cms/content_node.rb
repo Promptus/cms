@@ -45,8 +45,8 @@ module Cms
     scope :without_node, -> (node_id) { where('content_nodes.id != ?', node_id) }
     scope :root_nodes, -> { where(parent_id: nil) }
     scope :used_in_navbar, -> { where(used_in_navbar: true) }
-    scope :currently_in_navbar, -> { public_ordered_by_position.where(used_in_navbar: true).limit(ITEMS_IN_NAVBAR_MAX) }
     scope :not_used_in_navbar, -> { where(used_in_navbar: false) }
+    scope :currently_in_navbar, -> { public_ordered_by_position.used_in_navbar.limit(ITEMS_IN_NAVBAR_MAX) }
 
     scope :with_relations, -> { includes(:content_components, content_attributes: [:content_value]).merge(Cms::ContentComponent.with_relations) }
 
