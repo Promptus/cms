@@ -169,7 +169,7 @@ module Cms
     end
 
     def load_object
-      @content_node = unscoped.with_relations.find(params[:id])
+      @content_node = with_relations.find(params[:id])
     end
 
     def load_children

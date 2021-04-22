@@ -38,7 +38,7 @@ module Cms
     validates :url, uniqueness: true, allow_blank: true
     validates :name, uniqueness: { scope: :parent_id }
 
-    default_scope -> { order(position: :asc).where('access = ?', 'public') }
+    # default_scope -> { order(position: :asc).where('access = ?', 'public') }
 
     def unscoped_children
       Cms::ContentNode.unscoped.where(parent_id: id)
@@ -50,11 +50,12 @@ module Cms
 
     # active record already defines a public method
     scope :public_nodes, -> { where('access = ?', 'public') }
+    scope :asc_by_position, -> { order(position: :asc) }
+    scope :public_ordered_by_position, -> { public_nodes.asc_by_position }
     scope :without_node, -> (node_id) { where('content_nodes.id != ?', node_id) }
     scope :root_nodes, -> { where(parent_id: nil) }
-    scope :unscoped_root_nodes, -> { unscoped.where(parent_id: nil) }
     scope :used_in_navbar, -> { where(used_in_navbar: true) }
-    scope :currently_in_navbar, -> { where(used_in_navbar: true).limit(ITEMS_IN_NAVBAR_MAX) }
+    scope :currently_in_navbar, -> { public_ordered_by_position.where(used_in_navbar: true).limit(ITEMS_IN_NAVBAR_MAX) }
     scope :not_used_in_navbar, -> { where(used_in_navbar: false) }
 
     scope :with_relations, -> { includes(:content_components, content_attributes: [:content_value]).merge(Cms::ContentComponent.with_relations) }
@@ -142,7 +143,7 @@ module Cms
     class << self
       def resolve(path)
         path = path.split('/').reject {|item| item.blank? } if String === path
-        if path && node = unscoped_root_nodes.find_by_name(path.first)
+        if path && node = root_nodes.find_by_name(path.first)
           node.resolve(path[1..-1])
         end
       end
