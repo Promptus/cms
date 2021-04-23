@@ -44,7 +44,7 @@ RSpec.describe Cms::ContentNodesController, :type => :controller do
         end
 
         it "creates a new content_node" do
-          expect { valid_post }.to change{ Cms::ContentNode.unscoped.count }.by(1)
+          expect { valid_post }.to change{ Cms::ContentNode.count }.by(1)
         end
 
         it "creates a component" do
@@ -53,7 +53,7 @@ RSpec.describe Cms::ContentNodesController, :type => :controller do
 
         it "redirects to index" do
           valid_post
-          expect(response).to redirect_to edit_content_node_path(Cms::ContentNode.unscoped.last.id)
+          expect(response).to redirect_to edit_content_node_path(Cms::ContentNode.last.id)
         end
       end
     end
@@ -116,16 +116,16 @@ RSpec.describe Cms::ContentNodesController, :type => :controller do
 
     context 'if there is parent node' do
       it 'touches parent node' do
-        allow(controller).to receive_message_chain(:unscoped, :with_relations, :find).and_return third_node
+        allow(Cms::ContentNode).to receive_message_chain(:with_relations, :find).and_return third_node
         allow(third_node).to receive(:set_list_position).with('1')
-        allow(Cms::ContentNode).to receive_message_chain(:unscoped, :find_by).and_return parent_node
+        allow(Cms::ContentNode).to receive(:find_by).and_return parent_node
         expect(parent_node).to receive :touch
         post(:sort, params: { id: third_node.id, position: 1 })
       end
     end
 
     it 'changes content_node position' do
-      allow(controller).to receive_message_chain(:unscoped, :with_relations, :find).and_return third_node
+      allow(Cms::ContentNode).to receive_message_chain(:with_relations, :find).and_return third_node
       expect(third_node).to receive(:set_list_position).with('1')
       post(:sort, params: { id: third_node.id, position: 1 })
     end
@@ -134,7 +134,7 @@ RSpec.describe Cms::ContentNodesController, :type => :controller do
       first_current_updated_at = first_node.updated_at
       second_current_updated_at = second_node.updated_at
       third_current_updated_at = third_node.updated_at
-      allow(controller).to receive_message_chain(:unscoped, :with_relations, :find).and_return third_node
+      allow(Cms::ContentNode).to receive_message_chain(:with_relations, :find).and_return third_node
       post(:sort, params: { id: third_node.id, position: 1 })
       expect(second_node.updated_at).to eq second_current_updated_at
       expect(first_node.updated_at).to eq first_current_updated_at

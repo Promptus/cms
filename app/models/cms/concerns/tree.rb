@@ -7,9 +7,9 @@ module Cms
 
       included do
 
-        def unscoped_ancestors
+        def ancestors
           node, nodes = self, []
-          nodes << node = node.unscoped_parent while node.unscoped_parent
+          nodes << node = node.parent while node.parent
           nodes
         end
 
