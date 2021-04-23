@@ -13,7 +13,7 @@ module Cms
     before_action :load_assets, only: [:new, :edit, :create, :update, :copy]
 
     def index
-      @content_nodes = root_nodes
+      @content_nodes = ContentNode.asc_by_position.root_nodes
     end
 
     def new
@@ -157,7 +157,7 @@ module Cms
     def load_parent
       parent_id = params[:parent_id] || (params[:content_node] || {})[:parent_id]
       if parent_id.present?
-        @parent = ContentNode.asc_by_position.find(parent_id)
+        @parent = ContentNode.find(parent_id)
       end
     end
 
