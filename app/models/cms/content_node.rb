@@ -53,6 +53,22 @@ module Cms
     content_property :child_nodes
     content_property :use_components
 
+    def last_audit_including_associated
+      own_and_deeply_associated_audits.order(:created_at).last
+    end
+
+    def own_and_deeply_associated_audits
+      node_ids = children.ids + [self.id]
+      attribute_ids = content_attributes.ids
+      component_ids = content_components.ids
+      attribute_ids << Cms::ContentAttribute.where(attributable_id: component_ids, attributable_type: 'Cms::ContentComponent').ids
+      rel = Audited::Audit.where(auditable_type: 'Cms::ContentNode', auditable_id: node_ids)
+      rel = rel.or Audited::Audit.where(associated_type: 'Cms::ContentNode', associated_id: node_ids)
+      rel = rel.or Audited::Audit.where(associated_type: 'Cms::ContentAttribute', associated_id: attribute_ids)
+      children.each { |child| rel = rel.or Audited::Audit.where(id: child.own_and_deeply_associated_audits.ids) }
+      rel
+    end
+
     def add_to_navbar!
       update!(used_in_navbar: true)
     end
