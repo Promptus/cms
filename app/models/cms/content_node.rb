@@ -54,6 +54,7 @@ module Cms
     content_property :use_components
 
     def audit_with_parent!
+      return unless defined?(Audited::Audit)
       Audited::Audit.create!(auditable_id: self.id,
                              auditable_type: 'Cms::ContentNode',
                              associated_id: self.parent_id,
