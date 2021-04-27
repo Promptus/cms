@@ -51,6 +51,7 @@ module Cms
       if @content_node.update_attributes(content_node_params)
         touch_parent_node
         @content_node.touch
+        @content_node.audit_with_parent!
         @content_node.save
         redirect_to edit_content_node_path(@content_node)
       else
@@ -108,7 +109,7 @@ module Cms
     protected
 
     def touch_parent_node
-      Cms::ContentNode.find_by(id: @content_node.parent_id)&.touch
+      ContentNode.find_by(id: @content_node.parent_id)&.touch
     end
 
     def redirect_to_parent_or_index
