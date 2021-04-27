@@ -53,6 +53,29 @@ module Cms
     content_property :child_nodes
     content_property :use_components
 
+    def audit_with_parent!
+      return unless defined?(Audited::Audit)
+      Audited::Audit.create!(auditable_id: self.id,
+                             auditable_type: 'Cms::ContentNode',
+                             associated_id: self.parent_id,
+                             associated_type: (self.parent_id ? 'Cms::ContentNode' : nil),
+                             action: 'update',
+                             comment: 'created manually')
+    end
+
+    def last_audit_including_associated
+      own_and_deeply_associated_audits.order(:created_at).last
+    end
+
+    def own_and_deeply_associated_audits
+      attribute_ids = content_attributes.ids
+      attribute_ids += Cms::ContentAttribute.where(attributable_id: content_components.ids, attributable_type: 'Cms::ContentComponent').ids
+      audit_ids = Audited::Audit.where(auditable_type: 'Cms::ContentNode', auditable_id: self.id).ids
+      audit_ids += Audited::Audit.where(associated_type: 'Cms::ContentNode', associated_id: self.id).ids
+      audit_ids += Audited::Audit.where(associated_type: 'Cms::ContentAttribute', associated_id: attribute_ids).ids
+      Audited::Audit.where(id: audit_ids)
+    end
+
     def add_to_navbar!
       update!(used_in_navbar: true)
     end
