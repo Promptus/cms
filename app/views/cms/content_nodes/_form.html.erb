@@ -76,6 +76,38 @@
                 </div>
               </div>
             <% end %>
+            <br />
+            <% if @store_list_for_select.any? %>
+              <div class="row">
+                <div class="small-2 columns">
+                  <label class="right inline">Niederlassungen</label>
+                </div>
+                <div class="small-10 columns">
+                  <div class= "row">
+                    <% new_node = @content_node.new_record? %>
+                    <% no_stores = @content_node.content_node_store_numbers.empty? %>
+                    <% i = 0 %>
+                      <% @store_list_for_select.each_slice((@store_list_for_select.count.to_f / 2).ceil) do |slice| %>
+                        <div class= "small-6 columns">
+                        <input type="hidden" name="content_node[content_node_store_number_ids][]" value="">
+                        <% slice.each do |item| %>
+                          <span>
+                            <label for="content_node_content_node_store_numbers_ids_<%= i %>">
+                              <% if new_node || no_stores || @content_node.content_node_store_numbers.pluck(:number).include?(item[1]) %>
+                                <input type="checkbox" checked value=<%= item[1] %> name="content_node[content_node_store_number_ids][]" id="content_node_content_node_store_number_ids_<%= item[1] %>">
+                              <% else %>
+                                <input type="checkbox" value=<%= item[1] %> name="content_node[content_node_store_number_ids][]" id="content_node_content_node_store_number_ids_<%= item[1] %>">
+                              <% end %>
+                              <label class="collection_check_boxes" for="content_node_content_node_store_number_ids_<%= item[1] %>"><%= item[0] %></label>
+                            </label>
+                          </span>
+                        <% end %>
+                        </div>
+                      <% end %>
+                  </div>
+                </div>
+              </div>
+            <% end %>
             <%= f.input :meta_noindex, as: :boolean %>
           </div>
       </li>
