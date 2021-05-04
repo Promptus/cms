@@ -114,7 +114,7 @@ module Cms
 
     def reassign_store_numbers
       new_numbers = params[:content_node][:content_node_store_number_ids]&.reject(&:blank?)
-      return if new_numbers.blank? || new_numbers.sort == @content_node.content_node_store_numbers.pluck(:number).sort
+      return if new_numbers.sort == @content_node.content_node_store_numbers.pluck(:number).sort
       @content_node.content_node_store_numbers.clear
       new_numbers.each { |n| @content_node.content_node_store_numbers << ContentNodeStoreNumber.create(number: n) }
     end
