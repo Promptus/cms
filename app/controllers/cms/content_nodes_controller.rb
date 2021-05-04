@@ -20,6 +20,7 @@ module Cms
       type = params.delete(:type)
       @content_node = safe_new(type, content_node_types(@parent), parent_id: params[:parent_id])
       @content_node.load_attributes
+      @store_list_for_select = ContentNode.store_list_for_select
       load_components
     end
 
@@ -29,6 +30,7 @@ module Cms
       @content_node = safe_new(type, content_node_types(@parent))
       @content_node.load_attributes
       if @content_node.update_attributes(create_params)
+        reassign_store_numbers
         touch_parent_node
         redirect_to edit_content_node_path(@content_node)
       else
@@ -40,6 +42,7 @@ module Cms
     def edit
       @content_node.load_attributes
       @content_node.content_components.map(&:load_attributes)
+      @store_list_for_select = ContentNode.store_list_for_select
       load_components
     end
 
@@ -50,6 +53,7 @@ module Cms
       end
       if @content_node.update_attributes(content_node_params)
         touch_parent_node
+        reassign_store_numbers
         @content_node.touch
         @content_node.audit_with_parent!
         @content_node.save
@@ -107,6 +111,13 @@ module Cms
     end
 
     protected
+
+    def reassign_store_numbers
+      new_numbers = params[:content_node][:content_node_store_number_ids]&.reject(&:blank?)
+      return if new_numbers.blank? || new_numbers.sort == @content_node.content_node_store_numbers.pluck(:number).sort
+      @content_node.content_node_store_numbers.clear
+      new_numbers.each { |n| @content_node.content_node_store_numbers << ContentNodeStoreNumber.create(number: n) }
+    end
 
     def touch_parent_node
       ContentNode.find_by(id: @content_node.parent_id)&.touch

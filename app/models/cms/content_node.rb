@@ -154,6 +154,10 @@ module Cms
     end
 
     class << self
+      def store_list_for_select
+        UnitradeProxyClient::Store.list[1][:stores].map { |s| [s[:name], s[:number]] }
+      end
+
       def resolve(path)
         path = path.split('/').reject {|item| item.blank? } if String === path
         if path && node = root_nodes.find_by_name(path.first)
