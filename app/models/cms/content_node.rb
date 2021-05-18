@@ -60,7 +60,8 @@ module Cms
                              associated_id: self.parent_id,
                              associated_type: (self.parent_id ? 'Cms::ContentNode' : nil),
                              action: 'update',
-                             comment: 'created manually')
+                             comment: 'created manually',
+                             audited_changes: {})
     end
 
     def last_audit_including_associated
