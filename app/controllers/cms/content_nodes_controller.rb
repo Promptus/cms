@@ -20,13 +20,14 @@ module Cms
       type = params.delete(:type)
       @content_node = safe_new(type, content_node_types(@parent), parent_id: params[:parent_id])
       @content_node.load_attributes
-      @store_list_for_select = ContentNode.store_list_for_select
+      @store_list_for_select = store_list_for_select
       load_components
     end
 
     def create
       create_params = content_node_params
       type = create_params.delete('type')
+      @store_list_for_select = store_list_for_select
       @content_node = safe_new(type, content_node_types(@parent))
       @content_node.load_attributes
       if @content_node.update_attributes(create_params)
@@ -42,11 +43,12 @@ module Cms
     def edit
       @content_node.load_attributes
       @content_node.content_components.map(&:load_attributes)
-      @store_list_for_select = ContentNode.store_list_for_select
+      @store_list_for_select = store_list_for_select
       load_components
     end
 
     def update
+      @store_list_for_select = store_list_for_select
       @content_node.load_attributes
       if destroy_params = params[:destroy]
         @content_node.destroy_content_attributes_including_components(destroy_params[:content_node])
@@ -97,7 +99,7 @@ module Cms
     end
 
     def copy
-      @store_list_for_select = ContentNode.store_list_for_select
+      @store_list_for_select = store_list_for_select
       @content_node.title = "#{@content_node.title} (Kopie)"
       @content_node.name = @content_node.title.parameterize
       @content_node.access = "private"
@@ -112,6 +114,10 @@ module Cms
     end
 
     protected
+
+    def store_list_for_select
+      ContentNode.store_list_for_select
+    end
 
     def reassign_store_numbers
       new_numbers = params[:content_node][:content_node_store_number_ids]&.reject(&:blank?)
