@@ -97,6 +97,7 @@ module Cms
     end
 
     def copy
+      @store_list_for_select = ContentNode.store_list_for_select
       @content_node.title = "#{@content_node.title} (Kopie)"
       @content_node.name = @content_node.title.parameterize
       @content_node.access = "private"
