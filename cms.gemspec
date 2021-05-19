@@ -17,10 +17,11 @@ Gem::Specification.new do |s|
   s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
 
   s.add_dependency "rails", ">= 4.2"
+  s.add_dependency "sprockets", "< 4"
   s.add_dependency "cancancan", ">= 1.10.1"
   s.add_dependency "acts_as_tree", ">= 2.2.0"
   s.add_dependency "acts_as_list", "~> 0"
-  s.add_dependency "dragonfly", ">= 1.1"
+  s.add_dependency "dragonfly", "~> 1.3.0"
   s.add_dependency "paperclip"
   s.add_dependency "simple_form", "~> 4"
   s.add_dependency "kaminari", ">= 0.17"
